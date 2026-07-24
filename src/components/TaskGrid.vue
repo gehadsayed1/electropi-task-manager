@@ -30,19 +30,6 @@ const pagedTasks = computed(() => {
   return props.tasks.slice(start, start + pageSize.value)
 })
 
-const slotCounts = computed(() => {
-  const total = pageSize.value
-  const cols = statuses.length
-  const base = Math.floor(total / cols)
-  const rem = total % cols
-  const counts: Record<string, number> = {}
-  for (let i = 0; i < cols; i++) {
-    const key = statuses[i].key
-    counts[key] = base + (i < rem ? 1 : 0)
-  }
-  return counts
-})
-
 const emit = defineEmits<{
   edit: [task: Task]
   delete: [task: Task]
@@ -124,14 +111,6 @@ function onChange(e: any, destStatus: string) {
             </div>
           </template>
         </draggable>
-        <!-- placeholders to keep column height stable when there are fewer items -->
-        <template v-if="(slotCounts[s.key] ?? 0) > groups[s.key].length">
-          <div
-            v-for="n in (slotCounts[s.key] - groups[s.key].length)"
-            :key="`ph-${s.key}-${n}`"
-            class="invisible border border-transparent rounded-xl p-4 min-h-[140px]"
-          />
-        </template>
       </div>
       <!-- Pagination controls -->
       <div class="mt-4 flex items-center justify-center gap-2">
