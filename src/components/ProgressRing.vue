@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
+import { useTheme } from '@/composables'
 
 interface Props {
   percentage: number
@@ -22,6 +23,13 @@ const radius = computed(() => (size.value - strokeWidth.value) / 2)
 const circumference = computed(() => 2 * Math.PI * radius.value)
 const dashOffset = computed(() => circumference.value - (percentage.value / 100) * circumference.value)
 const center = computed(() => size.value / 2)
+
+const { theme } = useTheme()
+
+const strokeColor = computed(() => {
+  if (color.value) return color.value
+  return theme.value === 'dark' ? 'var(--color-warning)' : 'currentColor'
+})
 </script>
 
 <template>
@@ -54,7 +62,7 @@ const center = computed(() => size.value / 2)
         :cy="center"
         :r="radius"
         fill="none"
-        :stroke="color || 'currentColor'"
+        :stroke="strokeColor"
         class="progress-ring-circle"
         :stroke-width="strokeWidth"
         stroke-linecap="round"
@@ -63,11 +71,8 @@ const center = computed(() => size.value / 2)
         :style="{ transition: animate ? 'stroke-dashoffset 600ms cubic-bezier(.2,.9,.2,1), stroke 300ms' : 'none', filter: 'url(#ring-shadow)' }"
       />
     </svg>
-    <div class="absolute inset-0 flex flex-col items-center justify-center">
-      <span class="text-lg font-bold text-text-main leading-none">
-        {{ percentage }}%
-      </span>
-      <span class="text-[9px] text-text-muted mt-0.5">done</span>
+    <div class="absolute inset-0 flex flex-col items-center justify-center" :aria-label="`${percentage}% complete`">
+      <span class="text-[11px] font-semibold text-text-main leading-none">Done</span>
     </div>
   </div>
 </template>
