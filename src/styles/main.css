@@ -1,0 +1,228 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import "tailwindcss";
+
+/* ── App-level CSS Custom Properties (theme-switchable) ──────────────── */
+/* NOTE: We use --app-* prefix to avoid circular reference with @theme,    */
+/* which generates --color-* properties with the same names.               */
+:root {
+  --app-background: #FAFAFA;
+  --app-surface: #FFFFFF;
+  --app-border: #E5E7EB;
+  --app-text-main: #1F2937;
+  --app-text-muted: #6B7280;
+
+  --app-primary-light: #F5EEE7;
+
+  --app-success-light: #DCFCE7;
+  --app-success-text: #166534;
+
+  --app-warning-light: #FEF3C7;
+  --app-warning-text: #D97706;
+
+  --app-danger-light: #FEE2E2;
+  --app-danger-text: #EF4444;
+
+  --app-info-light: #DBEAFE;
+  --app-info-text: #1D4ED8;
+}
+
+.dark {
+  --app-background: #0F0F10;
+  --app-surface: #1A1A1E;
+  --app-border: #2A2A30;
+  --app-text-main: #F9FAFB;
+  --app-text-muted: #9CA3AF;
+
+  --app-primary-light: #2a1f14;
+
+  --app-success-light: #052e16;
+  --app-success-text: #4ADE80;
+
+  --app-warning-light: #2d2200;
+  --app-warning-text: #FBBF24;
+
+  --app-danger-light: #2d0a0a;
+  --app-danger-text: #F87171;
+
+  --app-info-light: #0f1f3d;
+  --app-info-text: #60A5FA;
+}
+
+/* ── Tailwind v4 @theme – References the --app-* vars above ─────────── */
+@theme {
+  --color-primary: #9D6638;
+  --color-primary-hover: #85552E;
+  --color-primary-light: var(--app-primary-light);
+
+  --color-background: var(--app-background);
+  --color-surface: var(--app-surface);
+  --color-border: var(--app-border);
+  --color-text-main: var(--app-text-main);
+  --color-text-muted: var(--app-text-muted);
+
+  --color-success: #22C55E;
+  --color-success-light: var(--app-success-light);
+  --color-success-text: var(--app-success-text);
+
+  --color-warning: #F59E0B;
+  --color-warning-light: var(--app-warning-light);
+  --color-warning-text: var(--app-warning-text);
+
+  --color-danger: #EF4444;
+  --color-danger-light: var(--app-danger-light);
+  --color-danger-text: var(--app-danger-text);
+  --color-danger-hover: #DC2626;
+
+  --color-info: #3B82F6;
+  --color-info-light: var(--app-info-light);
+  --color-info-text: var(--app-info-text);
+
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+
+  --shadow-soft: 0 1px 3px 0 rgba(0,0,0,0.06), 0 1px 2px -1px rgba(0,0,0,0.04);
+  --shadow-card: 0 4px 6px -1px rgba(0,0,0,0.07), 0 2px 4px -2px rgba(0,0,0,0.05);
+  --shadow-modal: 0 20px 60px -10px rgba(0,0,0,0.20);
+}
+
+/* ── Base Styles ─────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--app-background);
+  color: var(--app-text-main);
+  line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ── Scrollbar Styling ───────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 100px;
+}
+
+/* ── Focus Styles ────────────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Transitions ─────────────────────────────────────────────────────── */
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.page-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+.slide-up-enter-from,
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+/* ── Skeleton Pulse ──────────────────────────────────────────────────── */
+@keyframes pulse-skeleton {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.skeleton-pulse {
+  animation: pulse-skeleton 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ── Progress Ring ───────────────────────────────────────────────────── */
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+/* ── Drag & Drop ─────────────────────────────────────────────────────── */
+.sortable-ghost {
+  opacity: 0.4;
+  background: var(--color-primary-light) !important;
+  border: 2px dashed var(--color-primary) !important;
+}
+
+.sortable-chosen {
+  cursor: grabbing !important;
+}
+
+/* ── Toast ───────────────────────────────────────────────────────────── */
+.toast-enter-active {
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.toast-leave-active {
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.toast-enter-from {
+  opacity: 0;
+  transform: translateX(100%);
+}
+.toast-leave-to {
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+/* ── Modal ───────────────────────────────────────────────────────────── */
+.modal-enter-active {
+  transition: opacity 0.25s ease;
+}
+.modal-leave-active {
+  transition: opacity 0.2s ease;
+}
+.modal-enter-from,
+.modal-leave-to {
+  opacity: 0;
+}
+.modal-enter-active .modal-content,
+.modal-leave-active .modal-content {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease;
+}
+.modal-enter-from .modal-content,
+.modal-leave-to .modal-content {
+  transform: scale(0.95) translateY(-16px);
+  opacity: 0;
+}
