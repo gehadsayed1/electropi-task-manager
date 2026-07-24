@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { Task, TaskStatus } from '@/types'
+import { TaskStatus } from '@/types'
+import type { Task } from '@/types'
 import TaskCard from './TaskCard.vue'
 import EmptyState from './EmptyState.vue'
 import { useTaskStore } from '@/stores'
@@ -94,6 +95,10 @@ function onChange(e: any, destStatus: TaskStatus) {
   setTimeout(() => rebuildGroups(), 0)
 }
 
+const changeHandler = (dest: TaskStatus) => {
+  return (evt: any) => onChange(evt, dest)
+}
+
 </script>
 
 <template>
@@ -121,7 +126,7 @@ function onChange(e: any, destStatus: TaskStatus) {
           handle=".drag-handle"
           :animation="200"
           class="space-y-3"
-          @change="(e) => onChange(e, s.key)"
+          @change="changeHandler(s.key)"
         >
           <template #item="{ element }">
             <div>
