@@ -12,7 +12,6 @@ function goHome(): void {
 <template>
   <div class="min-h-screen bg-[#FAFAFA] dark:bg-[#0F0F10] flex items-center justify-center p-6">
     <div class="text-center max-w-md">
-      <!-- 404 Graphic -->
       <div
         class="text-[120px] font-black leading-none bg-gradient-to-br from-[#9D6638] to-[#F5EEE7] bg-clip-text text-transparent select-none mb-4"
       >

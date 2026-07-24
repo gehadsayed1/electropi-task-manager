@@ -63,7 +63,6 @@ async function onDeleteConfirm(): Promise<void> {
 <template>
   <AppLayout>
     <div class="p-6 lg:p-8 max-w-2xl mx-auto">
-      <!-- Back button -->
       <button
         id="back-btn"
         class="flex items-center gap-1.5 text-sm text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#9D6638] dark:hover:text-[#c4935a] mb-6 transition-colors cursor-pointer group"
@@ -80,19 +79,16 @@ async function onDeleteConfirm(): Promise<void> {
         Back to Dashboard
       </button>
 
-      <!-- Loading state -->
       <div v-if="isLoading" class="space-y-4">
         <div class="w-32 h-6 bg-[#F3F4F6] dark:bg-[#2A2A30] rounded skeleton-pulse" />
         <div class="w-full h-8 bg-[#F3F4F6] dark:bg-[#2A2A30] rounded skeleton-pulse" />
         <div class="w-3/4 h-4 bg-[#F3F4F6] dark:bg-[#2A2A30] rounded skeleton-pulse" />
       </div>
 
-      <!-- Task Detail -->
       <div
         v-else-if="task"
         class="bg-white dark:bg-[#1A1A1E] rounded-2xl border border-[#E5E7EB] dark:border-[#2A2A30] shadow-[0_1px_3px_0_rgba(0,0,0,0.06)]"
       >
-        <!-- Header -->
         <div class="p-6 border-b border-[#F3F4F6] dark:border-[#2A2A30]">
           <div class="flex items-start justify-between gap-4">
             <div class="flex-1">
@@ -158,9 +154,8 @@ async function onDeleteConfirm(): Promise<void> {
           </div>
         </div>
 
-        <!-- Body -->
         <div class="p-6 space-y-6">
-          <!-- Description -->
+          
           <div>
             <h2 class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
               Description
@@ -174,7 +169,7 @@ async function onDeleteConfirm(): Promise<void> {
             <p v-else class="text-sm text-[#9CA3AF] italic">No description provided.</p>
           </div>
 
-          <!-- Metadata Grid -->
+          
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1">
               <p class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Due Date</p>
@@ -215,7 +210,7 @@ async function onDeleteConfirm(): Promise<void> {
       </div>
     </div>
 
-    <!-- Edit Modal -->
+    
     <TaskModal
       v-if="showEditModal && task"
       :task="task"
@@ -224,7 +219,7 @@ async function onDeleteConfirm(): Promise<void> {
       @cancel="showEditModal = false"
     />
 
-    <!-- Delete Dialog -->
+    
     <DeleteDialog
       :task="showDeleteDialog ? (task ?? null) : null"
       :loading="submitting"

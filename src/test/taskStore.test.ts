@@ -5,7 +5,7 @@ import { useTaskStore } from '@/stores/taskStore'
 import { TaskStatus } from '@/types'
 import type { TaskFormData } from '@/types'
 
-// Mock taskService to avoid network calls
+ 
 vi.mock('@/services/taskService', () => ({
   taskService: {
     fetchTasks: vi.fn().mockResolvedValue([
@@ -40,7 +40,7 @@ vi.mock('@/services/taskService', () => ({
   },
 }))
 
-// Mock localStorage
+ 
 const localStorageMock = (() => {
   let store: Record<string, string> = {}
   return {

@@ -6,9 +6,8 @@ const { theme, toggleTheme } = useTheme()
 
 <template>
   <div class="min-h-screen flex flex-col  transition-colors duration-300 bg-background">
-    <!-- Top Header -->
-    <header class="sticky top-0 z-30 bg-surface/80 p-16 backdrop-blur-md border-b border-border p-10  h-16 flex items-center justify-between">
-      <!-- Left: Logo & Navigation -->
+    <header class="sticky top-0 z-30 bg-surface/80  backdrop-blur-md border-b border-border p-10  h-16 flex items-center justify-between">
+      
       <div class="flex items-center gap-4">
         <RouterLink to="/" class="flex items-center gap-2.5 group">
           <div class="w-8 h-8 rounded-lg bg-text-main flex items-center justify-center transition-transform group-hover:scale-105">
@@ -20,12 +19,11 @@ const { theme, toggleTheme } = useTheme()
         </RouterLink>
       </div>
 
-      <!-- Center: Search/Filters (Slot) -->
       <div class="flex-1 max-w-2xl mx-4 hidden md:flex justify-center">
         <slot name="header-center" />
       </div>
 
-      <!-- Right: Actions & Theme -->
+      
       <div class="flex items-center gap-3">
         <slot name="header-actions" />
 
@@ -37,11 +35,11 @@ const { theme, toggleTheme } = useTheme()
           :aria-label="`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`"
           @click="toggleTheme"
         >
-          <!-- Sun icon (show when dark → switch to light) -->
+          
           <svg v-if="theme === 'dark'" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
           </svg>
-          <!-- Moon icon (show when light → switch to dark) -->
+          
           <svg v-else class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
           </svg>
@@ -49,8 +47,8 @@ const { theme, toggleTheme } = useTheme()
       </div>
     </header>
 
-<main class="bg-red-100">
-  <div class="max-w-6xl mx-auto flex items-center justify-center  px-8 py-8 border-4 border-blue-500">
+<main >
+  <div class="max-w-6xl mx-auto flex items-center justify-center  px-8 py-8 ">
     <slot />
   </div>
 </main>

@@ -25,7 +25,6 @@ export function useValidation() {
     const due = new Date(dueDate)
     if (Number.isNaN(due.getTime())) return 'Invalid date format'
 
-    // Allow today and future dates
     const today = new Date()
     today.setHours(0, 0, 0, 0)
     if (due < today) return 'Due date must be today or in the future'

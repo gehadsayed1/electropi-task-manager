@@ -26,7 +26,6 @@ const center = computed(() => props.size / 2)
       :viewBox="`0 0 ${size} ${size}`"
       class="rotate-[-90deg]"
     >
-      <!-- Background track -->
       <circle
         :cx="center"
         :cy="center"
@@ -36,7 +35,6 @@ const center = computed(() => props.size / 2)
         class="text-border"
         :stroke-width="strokeWidth"
       />
-      <!-- Progress arc -->
       <circle
         :cx="center"
         :cy="center"
@@ -50,7 +48,6 @@ const center = computed(() => props.size / 2)
         :stroke-dashoffset="dashOffset"
       />
     </svg>
-    <!-- Center text -->
     <div class="absolute inset-0 flex flex-col items-center justify-center">
       <span class="text-lg font-bold text-text-main leading-none">
         {{ percentage }}%

@@ -8,7 +8,7 @@ import { generateId } from '@/utils'
 import { LOCAL_STORAGE_KEY } from '@/constants'
 
 export const useTaskStore = defineStore('tasks', () => {
-  // ── State ──────────────────────────────────────────────────────────────
+  
   const storedTasks = useLocalStorage<Task[]>(LOCAL_STORAGE_KEY, [])
   const tasks = ref<Task[]>(storedTasks.value)
   const loading = ref(false)
@@ -18,12 +18,12 @@ export const useTaskStore = defineStore('tasks', () => {
   const sort = ref<SortOption>('newest')
   const taskOrder = ref<string[]>([])
 
-  // ── Sync with localStorage ────────────────────────────────────────────
+  
   function syncToStorage() {
     storedTasks.value = tasks.value
   }
 
-  // ── Actions ───────────────────────────────────────────────────────────
+  
   async function fetchTasks(): Promise<void> {
     if (storedTasks.value.length > 0) {
       tasks.value = storedTasks.value
@@ -93,24 +93,19 @@ export const useTaskStore = defineStore('tasks', () => {
   }
 
   function reorderTasksPartially(newFilteredOrder: Task[]): void {
-    // 1. Get the current indices of these specific tasks in the global array
     const indices = newFilteredOrder.map(t => tasks.value.findIndex(gt => gt.id === t.id))
-    
-    // 2. Sort the indices so we know which slots are available for these items
+
     const sortedIndices = [...indices].sort((a, b) => a - b)
-    
-    // 3. Create a copy of the global tasks to mutate
+
     const updatedTasks = [...tasks.value]
-    
-    // 4. Place the tasks from the new order into the available sorted slots
+
     newFilteredOrder.forEach((task, i) => {
       const slotIndex = sortedIndices[i]
       if (slotIndex !== undefined && slotIndex !== -1) {
         updatedTasks[slotIndex] = task
       }
     })
-    
-    // 5. Update state
+
     tasks.value = updatedTasks
     taskOrder.value = updatedTasks.map(t => t.id)
     syncToStorage()
@@ -128,7 +123,7 @@ export const useTaskStore = defineStore('tasks', () => {
     sort.value = value
   }
 
-  // ── Getters ───────────────────────────────────────────────────────────
+  
   const filteredTasks = computed<Task[]>(() => {
     let result = [...tasks.value]
 
@@ -182,14 +177,13 @@ export const useTaskStore = defineStore('tasks', () => {
   const getTaskById = computed(() => (id: string) => tasks.value.find((t) => t.id === id))
 
   return {
-    // State
     tasks,
     loading,
     error,
     search,
     filter,
     sort,
-    // Actions
+    
     fetchTasks,
     createTask,
     updateTask,
@@ -199,7 +193,7 @@ export const useTaskStore = defineStore('tasks', () => {
     setSearch,
     setFilter,
     setSort,
-    // Getters
+    
     filteredTasks,
     statistics,
     getTaskById,

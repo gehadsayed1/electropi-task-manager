@@ -62,17 +62,15 @@ function onCancel(): void {
       aria-modal="true"
       :aria-label="title"
     >
-      <!-- Backdrop -->
       <div
         class="absolute inset-0 bg-black/40 backdrop-blur-sm"
         @click="onCancel"
       />
 
-      <!-- Content -->
       <div
         class="modal-content relative w-full max-w-lg bg-surface rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.25)] border border-border"
       >
-        <!-- Header -->
+        
         <div class="flex items-center justify-between px-6 pt-6 pb-4 border-b border-border">
           <div>
             <h2 class="text-base font-semibold text-text-main">{{ title }}</h2>
@@ -92,7 +90,6 @@ function onCancel(): void {
           </button>
         </div>
 
-        <!-- Form -->
         <form class="p-6 space-y-4" @submit.prevent="onSubmit">
           <BaseInput
             id="task-title"
@@ -134,7 +131,6 @@ function onCancel(): void {
             />
           </div>
 
-          <!-- Actions -->
           <div class="flex items-center justify-end gap-2 pt-2">
             <BaseButton
               id="cancel-task-btn"

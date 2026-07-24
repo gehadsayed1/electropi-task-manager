@@ -113,14 +113,14 @@ onMounted(async () => {
 
 <template>
   <AppLayout>
-    <!-- Header Center (Search) -->
+    
     <template #header-center>
       <div class="w-full max-w-md">
         <SearchInput :model-value="search" @update:model-value="onSearchUpdate" />
       </div>
     </template>
 
-    <!-- Header Center Mobile (Search) -->
+    
     <template #header-center-mobile>
       <SearchInput :model-value="search" @update:model-value="onSearchUpdate" />
       <div class="flex items-center gap-2">
@@ -129,7 +129,7 @@ onMounted(async () => {
       </div>
     </template>
 
-    <!-- Header Actions (Filters, Sort, Add) -->
+    
     <template #header-actions>
       <div class="hidden md:flex items-center gap-2 mr-2">
         <StatusFilter :model-value="filter" @update:model-value="onFilterUpdate" />
@@ -149,7 +149,7 @@ onMounted(async () => {
     </template>
 
     <div class="space-y-8">
-      <!-- Title Area -->
+      
       <div class="flex items-end justify-between">
         <div>
           <h1 class="text-2xl font-bold text-text-main tracking-tight">Overview</h1>
@@ -157,7 +157,7 @@ onMounted(async () => {
         </div>
       </div>
 
-      <!-- Stats -->
+      
       <Transition name="fade">
         <div v-if="!loading && !error">
           <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
@@ -192,14 +192,14 @@ onMounted(async () => {
         </div>
       </Transition>
 
-      <!-- Task Count -->
+      
       <div v-if="!loading && !error" class="flex items-center">
         <p class="text-sm font-medium text-text-muted">
           Showing <span class="text-text-main">{{ filteredTasks.length }}</span> {{ filteredTasks.length === 1 ? 'task' : 'tasks' }}
         </p>
       </div>
 
-      <!-- Content -->
+      
       <div>
         <LoadingSkeleton v-if="loading" :count="6" />
         <ErrorState
@@ -217,7 +217,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- Task Modal -->
+    
     <TaskModal
       v-if="showTaskModal"
       :task="editingTask"
@@ -226,7 +226,7 @@ onMounted(async () => {
       @cancel="closeModal"
     />
 
-    <!-- Delete Dialog -->
+    
     <DeleteDialog
       :task="deletingTask"
       :loading="submitting"

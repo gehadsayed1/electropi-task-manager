@@ -18,7 +18,6 @@ const emit = defineEmits<{
 
 <template>
   <div class="flex flex-col items-center justify-center py-20 px-6 text-center">
-    <!-- Illustration -->
     <div class="w-20 h-20 rounded-2xl bg-[#F5EEE7] dark:bg-[#2a1f14] flex items-center justify-center mb-5">
       <svg
         v-if="icon === 'empty'"

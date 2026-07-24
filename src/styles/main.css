@@ -1,9 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
-/* ── App-level CSS Custom Properties (theme-switchable) ──────────────── */
-/* NOTE: We use --app-* prefix to avoid circular reference with @theme,    */
-/* which generates --color-* properties with the same names.               */
+ 
 :root {
   --app-background: #FAFAFA;
   --app-surface: #FFFFFF;
@@ -48,7 +46,7 @@
   --app-info-text: #60A5FA;
 }
 
-/* ── Tailwind v4 @theme – References the --app-* vars above ─────────── */
+ 
 @theme {
   --color-primary: #9D6638;
   --color-primary-hover: #85552E;
@@ -88,12 +86,7 @@
   --shadow-modal: 0 20px 60px -10px rgba(0,0,0,0.20);
 }
 
-/* ── Base Styles ─────────────────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+
 
 html {
   font-family: var(--font-sans);
@@ -109,7 +102,7 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* ── Scrollbar Styling ───────────────────────────────────────────────── */
+ 
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -122,14 +115,14 @@ body {
   border-radius: 100px;
 }
 
-/* ── Focus Styles ────────────────────────────────────────────────────── */
+ 
 :focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
   border-radius: 4px;
 }
 
-/* ── Transitions ─────────────────────────────────────────────────────── */
+ 
 .page-enter-active,
 .page-leave-active {
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -162,7 +155,7 @@ body {
   transform: translateY(16px);
 }
 
-/* ── Skeleton Pulse ──────────────────────────────────────────────────── */
+ 
 @keyframes pulse-skeleton {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
@@ -172,14 +165,14 @@ body {
   animation: pulse-skeleton 1.6s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-/* ── Progress Ring ───────────────────────────────────────────────────── */
+ 
 .progress-ring-circle {
   transition: stroke-dashoffset 0.7s cubic-bezier(0.4, 0, 0.2, 1);
   transform: rotate(-90deg);
   transform-origin: 50% 50%;
 }
 
-/* ── Drag & Drop ─────────────────────────────────────────────────────── */
+ 
 .sortable-ghost {
   opacity: 0.4;
   background: var(--color-primary-light) !important;
@@ -190,7 +183,7 @@ body {
   cursor: grabbing !important;
 }
 
-/* ── Toast ───────────────────────────────────────────────────────────── */
+ 
 .toast-enter-active {
   transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -206,7 +199,7 @@ body {
   transform: translateX(100%);
 }
 
-/* ── Modal ───────────────────────────────────────────────────────────── */
+ 
 .modal-enter-active {
   transition: opacity 0.25s ease;
 }

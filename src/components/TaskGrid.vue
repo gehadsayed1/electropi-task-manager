@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, watch } from 'vue'
 import type { Task } from '@/types'
 import TaskCard from './TaskCard.vue'
 import EmptyState from './EmptyState.vue'
@@ -20,73 +20,76 @@ const emit = defineEmits<{
 
 const store = useTaskStore()
 
-const hasSearch = computed(() => !!store.search.trim())
-const hasFilter = computed(() => store.filter !== 'all')
+const statuses = [
+  { key: 'pending', label: 'Pending' },
+  { key: 'in_progress', label: 'In Progress' },
+  { key: 'done', label: 'Done' },
+]
 
-const emptyIcon = computed(() => (hasSearch.value || hasFilter.value ? 'search' : 'empty'))
-const emptyTitle = computed(() => {
-  if (hasSearch.value) return 'No tasks match your search'
-  if (hasFilter.value) return 'No tasks with this status'
-  return 'No tasks yet'
-})
-const emptyMessage = computed(() => {
-  if (hasSearch.value || hasFilter.value)
-    return "Try adjusting your search or filter to find what you're looking for."
-  return 'Create your first task to start tracking your progress.'
+const groups = ref<Record<string, Task[]>>({
+  pending: [],
+  in_progress: [],
+  done: [],
 })
 
-// Local writable computed for vuedraggable
-const localTasks = computed({
-  get: () => props.tasks,
-  set: (newFilteredOrder: Task[]) => {
-    // If the list is exactly the full list (no filters, 'newest' sort maybe), we can just replace
-    if (!hasSearch.value && !hasFilter.value && store.sort === 'newest') {
-      store.reorderTasks(newFilteredOrder)
-      return
-    }
-    
-    // Otherwise, figure out a basic reorder based on the new array
-    // A robust way to do this with filtered lists is to update the master array 
-    // by moving the dragged item.
-    // For simplicity, we can tell the store to update the full array 
-    // based on the new relative order of the filtered items.
-    store.reorderTasksPartially(newFilteredOrder)
+function rebuildGroups() {
+  groups.value.pending = props.tasks.filter((t) => t.status === 'pending')
+  groups.value.in_progress = props.tasks.filter((t) => t.status === 'in_progress')
+  groups.value.done = props.tasks.filter((t) => t.status === 'done')
+}
+
+watch(
+  () => props.tasks,
+  () => rebuildGroups(),
+  { immediate: true, deep: true },
+)
+
+function onChange(e: any, destStatus: string) {
+  if (e && e.added) {
+    const task: Task = e.added.element
+    store.updateTask(task.id, { status: destStatus })
   }
-})
+
+  setTimeout(() => rebuildGroups(), 0)
+}
 
 </script>
 
 <template>
   <div>
-    <draggable
-      v-if="props.tasks.length > 0"
-      v-model="localTasks"
-      item-key="id"
-      class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"
-      ghost-class="opacity-50"
-      drag-class="cursor-grabbing"
-      handle=".drag-handle"
-      :animation="200"
-    >
-      <template #item="{ element }">
-        <div class="h-full">
-          <!-- We can wrap TaskCard in a div to provide h-full if needed, but TaskCard is already h-full -->
-          <TaskCard
-            :task="element"
-            class="drag-handle"
-            @edit="emit('edit', $event)"
-            @delete="emit('delete', $event)"
-          />
-        </div>
-      </template>
-    </draggable>
+    <div v-if="props.tasks.length === 0">
+      <EmptyState @action="() => emit('create-task')" />
+    </div>
 
-    <EmptyState
-      v-else
-      :icon="emptyIcon"
-      :title="emptyTitle"
-      :message="emptyMessage"
-      @action="emit('create-task')"
-    />
+    <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+      <div v-for="s in statuses" :key="s.key" class="bg-transparent">
+        <div class="mb-2 flex items-center justify-between">
+          <h3 class="text-sm font-semibold text-text-main">{{ s.label }}</h3>
+          <span class="text-xs text-text-muted">{{ groups[s.key].length }}</span>
+        </div>
+
+        <draggable
+          :list="groups[s.key]"
+          item-key="id"
+          group="tasks"
+          ghost-class="opacity-50"
+          drag-class="cursor-grabbing"
+          handle=".drag-handle"
+          :animation="200"
+          @change="(e) => onChange(e, s.key)"
+        >
+          <template #item="{ element }">
+            <div class="mb-3">
+              <TaskCard
+                :task="element"
+                class="drag-handle"
+                @edit="emit('edit', $event)"
+                @delete="emit('delete', $event)"
+              />
+            </div>
+          </template>
+        </draggable>
+      </div>
+    </div>
   </div>
 </template>

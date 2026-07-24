@@ -58,7 +58,6 @@ function onDelete(e: Event): void {
     :aria-label="`Task: ${task.title}`"
     @click="openDetail"
   >
-    <!-- Header -->
     <div class="flex items-start justify-between gap-3 mb-2">
       <h3
         :class="[
@@ -73,7 +72,6 @@ function onDelete(e: Event): void {
       <StatusBadge :status="task.status" size="sm" class="shrink-0" />
     </div>
 
-    <!-- Description -->
     <p
       v-if="task.description"
       class="text-xs text-text-muted line-clamp-2 leading-relaxed mb-4 flex-1"
@@ -82,9 +80,8 @@ function onDelete(e: Event): void {
     </p>
     <div v-else class="flex-1"></div>
 
-    <!-- Footer -->
     <div class="flex items-center justify-between mt-auto pt-3 border-t border-border">
-      <!-- Due date & Badges -->
+      
       <div class="flex items-center gap-2">
         <div
           :class="[
@@ -103,7 +100,6 @@ function onDelete(e: Event): void {
         <span v-else-if="recentlyUpdated" class="w-1.5 h-1.5 rounded-full bg-info"></span>
       </div>
 
-      <!-- Actions -->
       <div class="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <button
           :id="`edit-task-${task.id}`"

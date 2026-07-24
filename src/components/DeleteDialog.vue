@@ -26,17 +26,14 @@ const emit = defineEmits<{
       aria-modal="true"
       aria-labelledby="delete-dialog-title"
     >
-      <!-- Backdrop -->
       <div
         class="absolute inset-0 bg-black/40 backdrop-blur-sm"
         @click="emit('cancel')"
       />
 
-      <!-- Content -->
       <div
         class="modal-content relative w-full max-w-sm bg-white dark:bg-[#1A1A1E] rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.25)] border border-[#E5E7EB] dark:border-[#2A2A30] p-6"
       >
-        <!-- Icon -->
         <div class="w-12 h-12 mx-auto mb-4 rounded-2xl bg-[#FEE2E2] dark:bg-[#2d0a0a] flex items-center justify-center">
           <svg class="w-6 h-6 text-[#EF4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path

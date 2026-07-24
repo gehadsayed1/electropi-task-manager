@@ -9,7 +9,7 @@ describe('useValidation', () => {
     validation = useValidation()
   })
 
-  // ── Title Validation ────────────────────────────────────────────────
+  
   describe('validateTitle', () => {
     it('returns error for empty title', () => {
       expect(validation.validateTitle('')).toBe('Title is required')
@@ -40,7 +40,7 @@ describe('useValidation', () => {
     })
   })
 
-  // ── Due Date Validation ─────────────────────────────────────────────
+  
   describe('validateDueDate', () => {
     it('returns undefined for null due date (optional)', () => {
       expect(validation.validateDueDate(null)).toBeUndefined()
@@ -68,7 +68,7 @@ describe('useValidation', () => {
     })
   })
 
-  // ── Description Validation ──────────────────────────────────────────
+  
   describe('validateDescription', () => {
     it('returns undefined for empty description (optional)', () => {
       expect(validation.validateDescription('')).toBeUndefined()
@@ -85,7 +85,7 @@ describe('useValidation', () => {
     })
   })
 
-  // ── Full Form Validation ────────────────────────────────────────────
+  
   describe('validate (full form)', () => {
     it('returns true for a valid form', () => {
       const isValid = validation.validate({
