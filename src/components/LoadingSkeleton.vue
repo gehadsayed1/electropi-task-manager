@@ -9,30 +9,43 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+  <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
     <div
       v-for="i in count"
       :key="i"
-      class="bg-surface rounded-2xl border border-border p-5 space-y-3"
+      class="relative bg-surface rounded-[24px] border border-border p-5 h-[240px] flex flex-col shadow-card overflow-hidden"
     >
-      <div class="flex items-start justify-between">
-        <div class="w-20 h-5 bg-border rounded-full skeleton-pulse" />
-        <div class="flex gap-1">
-          <div class="w-7 h-7 bg-border rounded-lg skeleton-pulse" />
-          <div class="w-7 h-7 bg-border rounded-lg skeleton-pulse" />
+      <!-- top-right triangle placeholder -->
+      <div class="absolute top-0 right-0 overflow-hidden pointer-events-none">
+        <div class="w-0 h-0 border-l-[48px] border-b-[48px] border-l-transparent border-b-transparent bg-transparent"></div>
+        <div class="absolute -top-[48px] right-0 block w-0 h-0 border-l-[48px] border-b-[48px] border-l-transparent"
+             :class="['bg-border']" />
+      </div>
+
+      <div class="flex items-start justify-between gap-3 mb-3">
+        <div class="w-28 h-5 bg-border rounded-full skeleton-pulse" />
+        <div class="flex gap-2">
+          <div class="w-9 h-9 bg-border rounded-full skeleton-pulse" />
+          <div class="w-9 h-9 bg-border rounded-full skeleton-pulse" />
         </div>
       </div>
-      <div class="space-y-2">
-        <div class="w-full h-4 bg-border rounded skeleton-pulse" />
+
+      <div class="mb-3 flex-1 overflow-hidden">
+        <div class="w-full h-4 bg-border rounded skeleton-pulse mb-2" />
+        <div class="w-full h-4 bg-border rounded skeleton-pulse mb-2" />
         <div class="w-3/4 h-4 bg-border rounded skeleton-pulse" />
       </div>
-      <div class="space-y-1.5">
-        <div class="w-full h-3 bg-border rounded skeleton-pulse" />
-        <div class="w-2/3 h-3 bg-border rounded skeleton-pulse" />
-      </div>
-      <div class="pt-2 border-t border-border flex justify-between">
-        <div class="w-24 h-3 bg-border rounded skeleton-pulse" />
-        <div class="w-14 h-3 bg-border rounded skeleton-pulse" />
+
+      <div class="mt-auto pt-3 border-t border-border flex items-center justify-between">
+        <div class="inline-flex items-center gap-2">
+          <div class="w-5 h-3 bg-border rounded skeleton-pulse" />
+          <div class="w-2.5 h-2.5 bg-border rounded-full skeleton-pulse" />
+        </div>
+
+        <div class="flex items-center gap-2">
+          <div class="w-9 h-9 bg-border rounded-full skeleton-pulse" />
+          <div class="w-9 h-9 bg-border rounded-full skeleton-pulse" />
+        </div>
       </div>
     </div>
   </div>
