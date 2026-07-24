@@ -123,9 +123,11 @@ onMounted(async () => {
     
     <template #header-center-mobile>
       <SearchInput :model-value="search" @update:model-value="onSearchUpdate" />
-      <div class="flex items-center gap-2">
-        <StatusFilter :model-value="filter" @update:model-value="onFilterUpdate" class="flex-1" />
-        <SortDropdown :model-value="sort" @update:model-value="onSortUpdate" class="flex-1" />
+      <div class="flex flex-col gap-2 w-full">
+        <div class="flex gap-2 w-full">
+          <StatusFilter :model-value="filter" @update:model-value="onFilterUpdate" />
+          <SortDropdown :model-value="sort" @update:model-value="onSortUpdate" />
+        </div>
       </div>
     </template>
 
@@ -181,12 +183,12 @@ onMounted(async () => {
               :value="statistics.completed"
               color="success"
             />
-            <div class="shrink-0 bg-surface rounded-xl border border-border px-4 py-3 flex items-center gap-3">
-               <ProgressRing :percentage="statistics.completedPercentage" :size="36" :stroke-width="4" />
-               <div>
-                  <p class="text-xs font-medium text-text-muted">Progress</p>
-                  <p class="text-sm font-semibold text-text-main">{{ statistics.completedPercentage }}%</p>
-               </div>
+            <div class="shrink-0 bg-surface rounded-xl border border-border px-6 py-4 flex items-center gap-4 w-58">
+              <ProgressRing :percentage="statistics.completedPercentage" :size="58" :stroke-width="6" />
+              <div>
+                <p class="text-sm font-medium text-text-muted">Progress</p>
+                <p class="text-lg font-semibold text-text-main">{{ statistics.completedPercentage }}%</p>
+              </div>
             </div>
           </div>
         </div>

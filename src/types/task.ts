@@ -22,7 +22,7 @@ export interface TaskFormData {
 }
 
 export type SortOption = 'newest' | 'oldest' | 'alphabetical' | 'dueDate'
-export type FilterOption = 'all' | TaskStatus
+export type FilterOption = 'all' | 'new' | 'old' | TaskStatus
 
 export interface Statistics {
   total: number

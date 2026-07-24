@@ -4,8 +4,8 @@ import { useLocalStorage } from '@vueuse/core'
 import { TaskStatus } from '@/types'
 import type { Task, TaskFormData, FilterOption, SortOption, Statistics } from '@/types'
 import { taskService } from '@/services'
-import { generateId } from '@/utils'
-import { LOCAL_STORAGE_KEY } from '@/constants'
+import { generateId, isRecentlyUpdated } from '@/utils'
+import { LOCAL_STORAGE_KEY, RECENTLY_UPDATED_THRESHOLD_MS } from '@/constants'
 
 export const useTaskStore = defineStore('tasks', () => {
   
@@ -14,7 +14,7 @@ export const useTaskStore = defineStore('tasks', () => {
   const loading = ref(false)
   const error = ref<string | null>(null)
   const search = ref('')
-  const filter = ref<FilterOption>('all')
+  const filter = ref<FilterOption>('new')
   const sort = ref<SortOption>('newest')
   const taskOrder = ref<string[]>([])
 
@@ -127,8 +127,13 @@ export const useTaskStore = defineStore('tasks', () => {
   const filteredTasks = computed<Task[]>(() => {
     let result = [...tasks.value]
 
-    // Filter by status
-    if (filter.value !== 'all') {
+    // Filter by custom filters: 'new' (recently updated) and 'old' (not recent)
+    if (filter.value === 'new') {
+      result = result.filter((t) => isRecentlyUpdated(t, RECENTLY_UPDATED_THRESHOLD_MS))
+    } else if (filter.value === 'old') {
+      result = result.filter((t) => !isRecentlyUpdated(t, RECENTLY_UPDATED_THRESHOLD_MS))
+    } else if (filter.value !== 'all') {
+      // treat as status filter
       result = result.filter((t) => t.status === filter.value)
     }
 

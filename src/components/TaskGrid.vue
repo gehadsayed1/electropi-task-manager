@@ -20,9 +20,10 @@ const emit = defineEmits<{
 
 const store = useTaskStore()
 
+// Order rows as requested: In Progress (top), Pending (middle), Done (bottom)
 const statuses = [
-  { key: 'pending', label: 'Pending' },
   { key: 'in_progress', label: 'In Progress' },
+  { key: 'pending', label: 'Pending' },
   { key: 'done', label: 'Done' },
 ]
 
@@ -62,13 +63,13 @@ function onChange(e: any, destStatus: string) {
     </div>
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-      <div v-for="s in statuses" :key="s.key" class="bg-transparent">
-        <div class="mb-2 flex items-center justify-between">
+      <div v-for="s in statuses" :key="s.key" class="">
+        <div class="mb-2">
           <h3 class="text-sm font-semibold text-text-main">{{ s.label }}</h3>
-          <span class="text-xs text-text-muted">{{ groups[s.key].length }}</span>
         </div>
 
         <draggable
+          tag="div"
           :list="groups[s.key]"
           item-key="id"
           group="tasks"
@@ -76,10 +77,11 @@ function onChange(e: any, destStatus: string) {
           drag-class="cursor-grabbing"
           handle=".drag-handle"
           :animation="200"
+          class="space-y-3"
           @change="(e) => onChange(e, s.key)"
         >
           <template #item="{ element }">
-            <div class="mb-3">
+            <div>
               <TaskCard
                 :task="element"
                 class="drag-handle"
