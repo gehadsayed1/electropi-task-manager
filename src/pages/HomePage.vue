@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import StatCard from '@/components/StatCard.vue'
 import TaskGrid from '@/components/TaskGrid.vue'
@@ -69,11 +69,13 @@ function closeDeleteDialog(): void {
 async function onTaskSubmit(formData: TaskFormData): Promise<void> {
   submitting.value = true
   try {
+    // allow DOM to update so loading spinner appears
+    await nextTick()
     if (editingTask.value) {
-      updateTask(editingTask.value.id, formData)
+      await updateTask(editingTask.value.id, formData)
       toast.success('Task updated successfully!')
     } else {
-      createTask(formData)
+      await createTask(formData)
       toast.success('Task created successfully!')
     }
     closeModal()
@@ -162,7 +164,7 @@ onMounted(async () => {
       
       <Transition name="fade">
         <div v-if="!loading && !error">
-          <div class="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+          <div class="grid grid-cols-2 sm:grid-cols-5 gap-4 pb-2">
             <StatCard
               title="Total"
               :value="statistics.total"
@@ -183,8 +185,8 @@ onMounted(async () => {
               :value="statistics.completed"
               color="success"
             />
-            <div class="shrink-0 bg-surface rounded-xl border border-border px-6 py-4 flex items-center gap-4 w-58">
-              <ProgressRing :percentage="statistics.completedPercentage" :size="58" :stroke-width="6" />
+            <div class="shrink-0 bg-surface rounded-xl border border-border px-6 py-4 flex items-center gap-4 w-40 sm:w-48">
+              <ProgressRing :percentage="statistics.completedPercentage" :size="48" :stroke-width="6" />
               <div>
                 <p class="text-sm font-medium text-text-muted">Progress</p>
                 <p class="text-lg font-semibold text-text-main">{{ statistics.completedPercentage }}%</p>

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, onMounted } from 'vue'
+import { computed, ref, onMounted, nextTick } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import AppLayout from '@/components/layout/AppLayout.vue'
 import StatusBadge from '@/components/StatusBadge.vue'
@@ -40,7 +40,8 @@ function goBack(): void {
 async function onTaskUpdate(formData: TaskFormData): Promise<void> {
   submitting.value = true
   try {
-    updateTask(taskId.value, formData)
+    await nextTick()
+    await updateTask(taskId.value, formData)
     toast.success('Task updated successfully!')
     showEditModal.value = false
   } finally {
@@ -51,7 +52,8 @@ async function onTaskUpdate(formData: TaskFormData): Promise<void> {
 async function onDeleteConfirm(): Promise<void> {
   submitting.value = true
   try {
-    deleteTask(taskId.value)
+    await nextTick()
+    await deleteTask(taskId.value)
     toast.success('Task deleted!')
     router.push({ name: 'Dashboard' })
   } finally {
@@ -65,7 +67,7 @@ async function onDeleteConfirm(): Promise<void> {
     <div class="p-6 lg:p-8 max-w-2xl mx-auto">
       <button
         id="back-btn"
-        class="flex items-center gap-1.5 text-sm text-[#6B7280] dark:text-[#9CA3AF] hover:text-[#9D6638] dark:hover:text-[#c4935a] mb-6 transition-colors cursor-pointer group"
+        class="flex items-center gap-1.5 text-sm text-text-muted hover:text-text-main mb-6 transition-colors cursor-pointer group"
         @click="goBack"
       >
         <svg
@@ -87,7 +89,7 @@ async function onDeleteConfirm(): Promise<void> {
 
       <div
         v-else-if="task"
-        class="bg-white dark:bg-[#1A1A1E] rounded-2xl border border-[#E5E7EB] dark:border-[#2A2A30] shadow-[0_1px_3px_0_rgba(0,0,0,0.06)]"
+        class="bg-surface rounded-2xl border border-border shadow-[0_1px_3px_0_rgba(0,0,0,0.06)]"
       >
         <div class="p-6 border-b border-[#F3F4F6] dark:border-[#2A2A30]">
           <div class="flex items-start justify-between gap-4">
@@ -113,7 +115,7 @@ async function onDeleteConfirm(): Promise<void> {
                   Recently Updated
                 </span>
               </div>
-              <h1 class="text-xl font-bold text-[#1F2937] dark:text-[#F9FAFB] leading-snug">
+              <h1 class="text-xl font-bold text-text-main leading-snug">
                 {{ task.title }}
               </h1>
             </div>
@@ -157,22 +159,22 @@ async function onDeleteConfirm(): Promise<void> {
         <div class="p-6 space-y-6">
           
           <div>
-            <h2 class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider mb-2">
+            <h2 class="text-xs font-semibold text-text-muted uppercase tracking-wider mb-2">
               Description
             </h2>
             <p
               v-if="task.description"
-              class="text-sm text-[#1F2937] dark:text-[#D1D5DB] leading-relaxed"
+              class="text-sm text-text-main leading-relaxed"
             >
               {{ task.description }}
             </p>
-            <p v-else class="text-sm text-[#9CA3AF] italic">No description provided.</p>
+            <p v-else class="text-sm text-text-muted italic">No description provided.</p>
           </div>
 
           
           <div class="grid grid-cols-2 gap-4">
             <div class="space-y-1">
-              <p class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Due Date</p>
+              <p class="text-xs font-semibold text-text-muted uppercase tracking-wider">Due Date</p>
               <p
                 :class="[
                   'text-sm font-medium',
@@ -193,15 +195,15 @@ async function onDeleteConfirm(): Promise<void> {
             </div>
 
             <div class="space-y-1">
-              <p class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Created</p>
-              <p class="text-sm text-[#1F2937] dark:text-[#F9FAFB]">
+              <p class="text-xs font-semibold text-text-muted uppercase tracking-wider">Created</p>
+              <p class="text-sm text-text-main">
                 {{ formatDateTime(task.createdAt) }}
               </p>
             </div>
 
             <div class="space-y-1">
-              <p class="text-xs font-semibold text-[#9CA3AF] uppercase tracking-wider">Last Updated</p>
-              <p class="text-sm text-[#1F2937] dark:text-[#F9FAFB]">
+              <p class="text-xs font-semibold text-text-muted uppercase tracking-wider">Last Updated</p>
+              <p class="text-sm text-text-main">
                 {{ formatDateTime(task.updatedAt) }}
               </p>
             </div>

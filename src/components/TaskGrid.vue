@@ -8,9 +8,40 @@ import draggable from 'vuedraggable'
 
 interface Props {
   tasks: Task[]
+  pageSize?: number
 }
 
 const props = defineProps<Props>()
+
+const pageSize = computed(() => props.pageSize ?? 9) // default 9 (3 columns x 3 rows)
+
+const currentPage = ref(1)
+
+const totalPages = computed(() => Math.max(1, Math.ceil(props.tasks.length / pageSize.value)))
+
+function setPage(p: number) {
+  if (p < 1) p = 1
+  if (p > totalPages.value) p = totalPages.value
+  currentPage.value = p
+}
+
+const pagedTasks = computed(() => {
+  const start = (currentPage.value - 1) * pageSize.value
+  return props.tasks.slice(start, start + pageSize.value)
+})
+
+const slotCounts = computed(() => {
+  const total = pageSize.value
+  const cols = statuses.length
+  const base = Math.floor(total / cols)
+  const rem = total % cols
+  const counts: Record<string, number> = {}
+  for (let i = 0; i < cols; i++) {
+    const key = statuses[i].key
+    counts[key] = base + (i < rem ? 1 : 0)
+  }
+  return counts
+})
 
 const emit = defineEmits<{
   edit: [task: Task]
@@ -34,13 +65,15 @@ const groups = ref<Record<string, Task[]>>({
 })
 
 function rebuildGroups() {
-  groups.value.pending = props.tasks.filter((t) => t.status === 'pending')
-  groups.value.in_progress = props.tasks.filter((t) => t.status === 'in_progress')
-  groups.value.done = props.tasks.filter((t) => t.status === 'done')
+  // group only the currently paginated tasks
+  const source = pagedTasks.value
+  groups.value.pending = source.filter((t) => t.status === 'pending')
+  groups.value.in_progress = source.filter((t) => t.status === 'in_progress')
+  groups.value.done = source.filter((t) => t.status === 'done')
 }
 
 watch(
-  () => props.tasks,
+  () => [props.tasks, currentPage.value, pageSize.value],
   () => rebuildGroups(),
   { immediate: true, deep: true },
 )
@@ -91,6 +124,34 @@ function onChange(e: any, destStatus: string) {
             </div>
           </template>
         </draggable>
+        <!-- placeholders to keep column height stable when there are fewer items -->
+        <template v-if="(slotCounts[s.key] ?? 0) > groups[s.key].length">
+          <div
+            v-for="n in (slotCounts[s.key] - groups[s.key].length)"
+            :key="`ph-${s.key}-${n}`"
+            class="invisible border border-transparent rounded-xl p-4 min-h-[140px]"
+          />
+        </template>
+      </div>
+      <!-- Pagination controls -->
+      <div class="mt-4 flex items-center justify-center gap-2">
+        <button
+          class="px-3 py-1 rounded-md border bg-border/50 text-text-muted disabled:opacity-50"
+          :disabled="currentPage === 1"
+          @click.prevent="setPage(currentPage - 1)"
+        >
+          Prev
+        </button>
+
+        <div class="text-sm text-text-muted">Page {{ currentPage }} / {{ totalPages }}</div>
+
+        <button
+          class="px-3 py-1 rounded-md border bg-border/50 text-text-muted disabled:opacity-50"
+          :disabled="currentPage === totalPages"
+          @click.prevent="setPage(currentPage + 1)"
+        >
+          Next
+        </button>
       </div>
     </div>
   </div>
