@@ -40,9 +40,24 @@ const store = useTaskStore()
 
 // Order rows as requested: In Progress (top), Pending (middle), Done (bottom)
 const statuses = [
-  { key: 'in_progress', label: 'In Progress' },
-  { key: 'pending', label: 'Pending' },
-  { key: 'done', label: 'Done' },
+  {
+    key: 'in_progress',
+    label: 'In Progress',
+    icon: 'M12 4v4l4 4-4 4v4',
+    color: 'text-info',
+  },
+  {
+    key: 'pending',
+    label: 'Pending',
+    icon: 'M12 6a6 6 0 100 12 6 6 0 000-12zm0 0v4l3 3',
+    color: 'text-warning',
+  },
+  {
+    key: 'done',
+    label: 'Done',
+    icon: 'M5 13l4 4L19 7',
+    color: 'text-success',
+  },
 ]
 
 const groups = ref<Record<string, Task[]>>({
@@ -84,7 +99,10 @@ function onChange(e: any, destStatus: string) {
 
     <div v-else class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div v-for="s in statuses" :key="s.key" class="">
-        <div class="mb-2">
+        <div class="mb-2 flex items-center gap-2">
+          <svg :class="['w-4 h-4', s.color]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="s.icon" />
+          </svg>
           <h3 class="text-sm font-semibold text-text-main">{{ s.label }}</h3>
         </div>
 
