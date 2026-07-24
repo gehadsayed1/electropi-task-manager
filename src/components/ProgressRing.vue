@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed, toRefs } from 'vue'
-import { useTheme } from '@/composables'
 
 interface Props {
   percentage: number
@@ -17,19 +16,14 @@ const props = withDefaults(defineProps<Props>(), {
   animate: true,
 })
 
-const { percentage, size, strokeWidth, color, animate } = toRefs(props)
+const { percentage, size, strokeWidth, animate } = toRefs(props)
 
 const radius = computed(() => (size.value - strokeWidth.value) / 2)
 const circumference = computed(() => 2 * Math.PI * radius.value)
 const dashOffset = computed(() => circumference.value - (percentage.value / 100) * circumference.value)
 const center = computed(() => size.value / 2)
 
-const { theme } = useTheme()
-
-const strokeColor = computed(() => {
-  if (color.value) return color.value
-  return theme.value === 'dark' ? 'var(--color-warning)' : 'currentColor'
-})
+const strokeColor = computed(() => 'var(--color-primary)')
 </script>
 
 <template>
