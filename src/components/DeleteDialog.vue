@@ -32,10 +32,10 @@ const emit = defineEmits<{
       />
 
       <div
-        class="modal-content relative w-full max-w-sm bg-white dark:bg-[#1A1A1E] rounded-2xl shadow-[0_20px_60px_-10px_rgba(0,0,0,0.25)] border border-[#E5E7EB] dark:border-[#2A2A30] p-6"
+        class="modal-content relative w-full max-w-sm rounded-[24px] border border-border bg-surface shadow-[0_20px_60px_-10px_rgba(0,0,0,0.25)] p-6"
       >
-        <div class="w-12 h-12 mx-auto mb-4 rounded-2xl bg-[#FEE2E2] dark:bg-[#2d0a0a] flex items-center justify-center">
-          <svg class="w-6 h-6 text-[#EF4444]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-danger-light/70 dark:bg-danger-light/20">
+          <svg class="h-6 w-6 text-danger" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -47,21 +47,21 @@ const emit = defineEmits<{
 
         <h2
           id="delete-dialog-title"
-          class="text-base font-semibold text-center text-[#1F2937] dark:text-[#F9FAFB] mb-1"
+          class="mb-1 text-center text-base font-semibold text-text-main"
         >
           Delete Task
         </h2>
-        <p class="text-sm text-[#6B7280] dark:text-[#9CA3AF] text-center mb-6">
+        <p class="mb-6 text-center text-sm leading-6 text-text-muted">
           Are you sure you want to delete
-          <span class="font-medium text-[#1F2937] dark:text-[#F9FAFB]">"{{ task.title }}"</span>?
+          <span class="font-semibold text-text-main">"{{ task.title }}"</span>?
           This action cannot be undone.
         </p>
 
-        <div class="flex gap-3">
+        <div class="flex flex-col gap-3 sm:flex-row">
           <BaseButton
             id="cancel-delete-btn"
             variant="outline"
-            class="flex-1"
+            class="flex-1 touch-manipulation"
             @click="emit('cancel')"
           >
             Cancel
@@ -70,7 +70,7 @@ const emit = defineEmits<{
             id="confirm-delete-btn"
             variant="danger"
             :loading="loading"
-            class="flex-1"
+            class="flex-1 touch-manipulation"
             @click="emit('confirm')"
           >
             Delete

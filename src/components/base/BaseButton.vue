@@ -41,7 +41,7 @@ const sizeClasses: Record<string, string> = {
     :type="type"
     :disabled="disabled || loading"
     :class="[
-      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 cursor-pointer select-none',
+      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 cursor-pointer select-none touch-manipulation',
       'disabled:opacity-50 disabled:cursor-not-allowed disabled:pointer-events-none',
       variantClasses[variant],
       sizeClasses[size],
