@@ -6,6 +6,10 @@ import { TaskStatus } from '@/types'
 import StatusBadge from './StatusBadge.vue'
 import { isOverdue, isDueToday, isRecentlyUpdated, formatDate } from '@/utils'
 
+function isTouchEvent(event: Event): boolean {
+  return 'pointerType' in event && (event as PointerEvent).pointerType === 'touch'
+}
+
 interface Props {
   task: Task
 }
@@ -40,16 +44,21 @@ const statusTriangleStyle = computed(() => {
 
 const shouldShowMore = computed(() => props.task.description.length > 100)
 
-function openDetail(): void {
+function openDetail(event?: Event): void {
+  if (event && isTouchEvent(event)) {
+    event.preventDefault()
+  }
   router.push({ name: 'TaskDetail', params: { id: props.task.id } })
 }
 
 function onEdit(e: Event): void {
+  e.preventDefault()
   e.stopPropagation()
   emit('edit', props.task)
 }
 
 function onDelete(e: Event): void {
+  e.preventDefault()
   e.stopPropagation()
   emit('delete', props.task)
 }
@@ -57,9 +66,10 @@ function onDelete(e: Event): void {
 
 <template>
   <article
-    class="group relative overflow-hidden rounded-[24px] border border-border bg-surface shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-text-muted/30 hover:shadow-lg cursor-pointer h-[240px]"
+    class="group relative overflow-hidden rounded-[24px] border border-border bg-surface shadow-card transition-all duration-200 hover:-translate-y-0.5 hover:border-text-muted/30 hover:shadow-lg cursor-pointer h-[240px] touch-manipulation"
     :aria-label="`Task: ${task.title}`"
     @click="openDetail"
+    @pointerup="openDetail"
   >
     <div class="absolute top-0 right-0 overflow-hidden">
       <div
@@ -120,9 +130,10 @@ function onDelete(e: Event): void {
         <div class="mt-3 flex items-center justify-end gap-2">
           <button
             :id="`edit-task-${task.id}`"
-            class="w-9 h-9 flex items-center justify-center rounded-full bg-surface text-info shadow-sm hover:text-text-main hover:bg-background transition-colors"
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-surface text-info shadow-sm hover:text-text-main hover:bg-background transition-colors touch-manipulation"
             aria-label="Edit task"
             @click="onEdit"
+            @pointerup="onEdit"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
@@ -130,9 +141,10 @@ function onDelete(e: Event): void {
           </button>
           <button
             :id="`delete-task-${task.id}`"
-            class="w-9 h-9 flex items-center justify-center rounded-full bg-surface text-danger shadow-sm hover:bg-danger-light/20 dark:hover:bg-danger-light/10 transition-colors"
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-surface text-danger shadow-sm hover:bg-danger-light/20 dark:hover:bg-danger-light/10 transition-colors touch-manipulation"
             aria-label="Delete task"
             @click="onDelete"
+            @pointerup="onDelete"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
