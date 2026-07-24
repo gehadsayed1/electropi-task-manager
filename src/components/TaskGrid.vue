@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
-import type { Task } from '@/types'
+import type { Task, TaskStatus } from '@/types'
 import TaskCard from './TaskCard.vue'
 import EmptyState from './EmptyState.vue'
 import { useTaskStore } from '@/stores'
@@ -39,39 +39,44 @@ const emit = defineEmits<{
 const store = useTaskStore()
 
 // Order rows as requested: In Progress (top), Pending (middle), Done (bottom)
-const statuses = [
+const statuses: Array<{
+  key: TaskStatus
+  label: string
+  icon: string
+  color: string
+}> = [
   {
-    key: 'in_progress',
+    key: TaskStatus.IN_PROGRESS,
     label: 'In Progress',
     icon: 'M12 4v4l4 4-4 4v4',
     color: 'text-info',
   },
   {
-    key: 'pending',
+    key: TaskStatus.PENDING,
     label: 'Pending',
     icon: 'M12 6a6 6 0 100 12 6 6 0 000-12zm0 0v4l3 3',
     color: 'text-warning',
   },
   {
-    key: 'done',
+    key: TaskStatus.DONE,
     label: 'Done',
     icon: 'M5 13l4 4L19 7',
     color: 'text-success',
   },
 ]
 
-const groups = ref<Record<string, Task[]>>({
-  pending: [],
-  in_progress: [],
-  done: [],
+const groups = ref<Record<TaskStatus, Task[]>>({
+  [TaskStatus.PENDING]: [],
+  [TaskStatus.IN_PROGRESS]: [],
+  [TaskStatus.DONE]: [],
 })
 
 function rebuildGroups() {
   // group only the currently paginated tasks
   const source = pagedTasks.value
-  groups.value.pending = source.filter((t) => t.status === 'pending')
-  groups.value.in_progress = source.filter((t) => t.status === 'in_progress')
-  groups.value.done = source.filter((t) => t.status === 'done')
+  groups.value[TaskStatus.PENDING] = source.filter((t) => t.status === TaskStatus.PENDING)
+  groups.value[TaskStatus.IN_PROGRESS] = source.filter((t) => t.status === TaskStatus.IN_PROGRESS)
+  groups.value[TaskStatus.DONE] = source.filter((t) => t.status === TaskStatus.DONE)
 }
 
 watch(
@@ -80,7 +85,7 @@ watch(
   { immediate: true, deep: true },
 )
 
-function onChange(e: any, destStatus: string) {
+function onChange(e: any, destStatus: TaskStatus) {
   if (e && e.added) {
     const task: Task = e.added.element
     store.updateTask(task.id, { status: destStatus })
