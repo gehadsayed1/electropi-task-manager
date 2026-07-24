@@ -71,11 +71,11 @@ async function onTaskSubmit(formData: TaskFormData): Promise<void> {
   try {
     // allow DOM to update so loading spinner appears
     await nextTick()
+    await new Promise((resolve) => setTimeout(resolve, 650))
     if (editingTask.value) {
       await updateTask(editingTask.value.id, formData)
       toast.success('Task updated successfully!')
     } else {
-      await new Promise((resolve) => setTimeout(resolve, 650))
       await createTask(formData)
       toast.success('Task created successfully!')
     }
